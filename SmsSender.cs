@@ -31,7 +31,7 @@ namespace NetSmsSender
         /// <summary>
         /// The baud rate of the serial port.
         /// </summary>
-        private const int BaudRate = 115200;
+        public static int BaudRate = 115200;
 
         /// <summary>
         /// The initial sleep time after opening the serial port.
@@ -39,9 +39,14 @@ namespace NetSmsSender
         private const int InitialSleepTime = 500;
 
         /// <summary>
+        /// Sleep between writes to the serial port.
+        /// </summary>
+        private const int CommandSleepTime = 500;
+
+        /// <summary>
         /// The PDU formatted SMS messages to send.
         /// </summary>
-        private IEnumerable<PduSmsMessage> pduMessages;
+        private readonly  IEnumerable<PduSmsMessage> pduMessages;
 
         /// <summary>
         /// The serial port.
@@ -156,6 +161,7 @@ namespace NetSmsSender
         {
             // Set the content.
             this.port.Write(string.Format(CultureInfo.InvariantCulture, "{0}\x1A", pduMessage));
+            Thread.Sleep(SmsSender.CommandSleepTime);
 
             // Validate response.
             while (true)
@@ -186,6 +192,7 @@ namespace NetSmsSender
         {
             // Set the mode.
             this.port.Write("AT+CMGF=0\r\n");
+            Thread.Sleep(SmsSender.CommandSleepTime);
 
             // Validate response.
             while (true)
@@ -217,6 +224,7 @@ namespace NetSmsSender
         {
             // Set the size.
             this.port.Write(string.Format(CultureInfo.InvariantCulture, "AT+CMGS={0}\r\n", pduMessage.Length));
+            Thread.Sleep(SmsSender.CommandSleepTime);
 
             // Validate response.
             while (true)
