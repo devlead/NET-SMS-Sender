@@ -34,6 +34,26 @@ namespace NetSmsSender
         public static int BaudRate = 115200;
 
         /// <summary>
+        /// The Parity of the serial port
+        /// </summary>
+        public static Parity Parity = Parity.None;
+
+        /// <summary>
+        /// The DataBits of the serial port
+        /// </summary>
+        public static int DataBits = 8;
+
+        /// <summary>
+        /// The StopBits of the serial port
+        /// </summary>
+        public static StopBits StopBits = StopBits.One;
+
+        /// <summary>
+        /// The Endcoding of the serial port
+        /// </summary>
+        public static Encoding Encoding = Encoding.ASCII;
+
+        /// <summary>
         /// The initial sleep time after opening the serial port.
         /// </summary>
         private const int InitialSleepTime = 500;
@@ -73,7 +93,10 @@ namespace NetSmsSender
             }
 
             // Port creation.
-            this.port = new SerialPort(portName, SmsSender.BaudRate);
+            this.port = new SerialPort(portName, SmsSender.BaudRate, SmsSender.Parity, SmsSender.DataBits, SmsSender.StopBits)
+                            {
+                                Encoding = SmsSender.Encoding
+                            };
             this.port.DataReceived += this.DataReceived;
 
             // Number composition.
