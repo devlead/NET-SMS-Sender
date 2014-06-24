@@ -14,6 +14,7 @@ namespace NetSmsSender
     using System.Globalization;
     using System.IO.Ports;
     using System.Threading;
+    using System.Text;
 
     /// <summary>
     /// Sends SMS messages by issuing AT commands on a serial port.
